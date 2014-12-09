@@ -1,0 +1,35 @@
+<html>
+ <body>
+  <h3>Private Key</h3>
+  <input type="text" id="wiftext"><br /><br />
+  <div id="wif"></div>
+
+  <h3>Public Key</h3>
+  <input type="text" id="pubtext"><br /><br />
+  <div id="pub"></div>
+
+  <h3>Address</h3>
+  <input type="text" id="addtext"><br /><br />
+  <div id="add"></div>
+ </body>
+
+<!-- Java Script //-->
+<script src="bitshares-debug.js"></script>
+<script src="jquery.min.js"></script>
+<script src="qrcode.min.js"></script>
+<script type="text/javascript">
+var key
+$(document).ready(function() {
+ var randArr = new Uint8Array(32)
+ window.crypto.getRandomValues(randArr) //populate array with cryptographically secure random numbers
+ key = bts.ecc.PrivateKey.fromBuffer(randArr)
+ new QRCode(document.getElementById("wif"), key.toWif());
+ new QRCode(document.getElementById("pub"), key.toPublicKey().toBtsAddy());
+ new QRCode(document.getElementById("add"), key.toPublicKey().toBtsPublic());
+ $("#wiftext").val(key.toWif());
+ $("#pubtext").val(key.toPublicKey().toBtsAddy());
+ $("#addtext").val(key.toPublicKey().toBtsPublic());
+})
+</script>
+
+</html>
