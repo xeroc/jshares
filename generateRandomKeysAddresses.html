@@ -1,35 +1,65 @@
-<html>
- <body>
-  <h3>Private Key</h3>
-  <input type="text" id="wiftext"><br /><br />
-  <div id="wif"></div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="xeroc">
+    <title>BitShares Paperwallet</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <script src="bitshares.min.js"></script>
+    <script src="jquery.min.js"></script>
+    <script src="qrcode.min.js"></script>
+    <style>
+        .footer {
+                  padding-top: 40px;
+                  padding-bottom: 40px;
+                  margin-top: 40px;
+                  border-top: 1px solid #eee;
+                }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-group">
+        <label>Private Key</label>
+        <input type="text" class="form-control" id="wiftext" readonly>
+        <p class="center-block"><div id="wif"></div></p>
+      </div>
+      <div class="form-group">
+        <label>Public Key</label>
+        <input type="text" class="form-control" id="pubtext" readonly>
+        <p class="text-center"><div id="pub"></div></p>
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text" class="form-control" id="addtext" readonly>
+        <p class="text-center"><div id="add"></div></p>
+      </div>
+    </div>
 
-  <h3>Public Key</h3>
-  <input type="text" id="pubtext"><br /><br />
-  <div id="pub"></div>
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">AS IS. ABSOLUTELY NO WARRENTY.</p>
+      </div>
+    </footer>
 
-  <h3>Address</h3>
-  <input type="text" id="addtext"><br /><br />
-  <div id="add"></div>
- </body>
-
-<!-- Java Script //-->
-<script src="bitshares.min.js"></script>
-<script src="jquery.min.js"></script>
-<script src="qrcode.min.js"></script>
-<script type="text/javascript">
-var key
-$(document).ready(function() {
- var randArr = new Uint8Array(32)
- window.crypto.getRandomValues(randArr) //populate array with cryptographically secure random numbers
- key = bts.ecc.PrivateKey.fromBuffer(randArr)
- new QRCode(document.getElementById("wif"), key.toWif());
- new QRCode(document.getElementById("pub"), key.toPublicKey().toBtsAddy());
- new QRCode(document.getElementById("add"), key.toPublicKey().toBtsPublic());
- $("#wiftext").val(key.toWif());
- $("#pubtext").val(key.toPublicKey().toBtsAddy());
- $("#addtext").val(key.toPublicKey().toBtsPublic());
-})
-</script>
-
+    <!-- Java Script //-->
+    <script type="text/javascript">
+    var key
+    $(document).ready(function() {
+     var randArr = new Uint8Array(32)
+     window.crypto.getRandomValues(randArr) //populate array with cryptographically secure random numbers
+     key = bts.ecc.PrivateKey.fromBuffer(randArr)
+     new QRCode(document.getElementById("wif"), key.toWif());
+     new QRCode(document.getElementById("pub"), key.toPublicKey().toBtsPublic());
+     new QRCode(document.getElementById("add"), key.toPublicKey().toBtsAddy());
+     $("#wiftext").val(key.toWif());
+     $("#pubtext").val(key.toPublicKey().toBtsPublic());
+     $("#addtext").val(key.toPublicKey().toBtsAddy());
+    })
+    </script>
+  </body>
 </html>
