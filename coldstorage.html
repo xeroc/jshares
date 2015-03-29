@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="xeroc">
+    <title>BitShares ColdStorage</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bitshares.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/qrcode.min.js"></script>
+    <style>
+        .footer {
+                  padding-top: 40px;
+                  padding-bottom: 40px;
+                  margin-top: 40px;
+                  border-top: 1px solid #eee;
+                }
+        #wiftext, #addtext {
+                  font-family : monospace;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+     <h1>BitShares - Cold Storage</h1>
+     <div class="row">
+      <div class="col-md-9">
+       <small>Randomly chosen pivate key. Refresh to get a new key.</small>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-primary" type="submit" onClick="window.print()"><span class="glyphicon glyphicon-print">Print</button>
+        <button class="btn btn-danger" type="submit" onClick="window.location.reload()"><span class="glyphicon glyphicon-refresh">Refresh</button>
+      </div>
+     </div>
+     <div class="row">
+      <hr />
+      <div class="col-md-6">
+       <div class="form-group">
+         <p class="text-center"><div id="add"></div></p>
+         <label>BitShares Address</label>
+         <p><code id="addtext"></code></p>
+       </div>
+      </div>
+      <div class="col-md-6">
+       <div class="form-group">
+         <p class="center-block"><div id="wif"></div></p>
+         <label>BitShares Private Key (Wallet Import Format - WIF)</label>
+         <p><code id="wiftext"></code></p>
+       </div>
+      </div>
+     </div>
+     <hr />
+
+     <h2>Instructions</h2>
+     <dl>
+      <dt>Address and Private Key</dt>
+      <dd>You see a single pairing (wallet) of a BitShares address with its
+          corresponding private key (in the import format). These have been
+          generated for you in your web browser and is displayed above.</dd>
+
+      <dt>Safety</dt>
+      <dd>To safeguard this wallet you must print or otherwise record the BitShares
+          address and private key. It is important to make a backup copy of the
+          private key and store it in a safe location. This site does not have
+          knowledge of your private key. If you are familiar with PGP you can
+          download this all-in-one HTML page and check that you have an authentic
+          version from the author of this site by matching the SHA256 hash of this
+          HTML with the SHA256 hash available in the signed version history document
+          linked on the footer of this site. If you leave/refresh the site or press
+          the "Generate New Address" button then a new private key will be generated
+          and the previously displayed private key will not be retrievable. Your
+          BitShares private key should be kept a secret. Whomever you share the
+          private key with has access to spend all the BitShares and assets
+          associated with that address. If you print your wallet then store it in a
+          zip lock bag to keep it safe from water. Treat a paper wallet like
+          cash.</dd>
+
+      <dt>Funding</dt>
+      <dd>Add funds to this wallet by sending them to your BitShares address. Never
+          hand over your private key to anyone! Before BitShares
+          <code>0.9.0</code> you will have to use a terminal command to transfer
+          your funds to your cold storage address. The terminal can be found in
+          the <code>Advanced</code> tab (in the list of your accounts,
+          top-right). Fund can be transfer like this:
+<pre>
+wallet_transfer_to_address &lt;amount_to_transfer&gt; &lt;asset_symbol&gt; &lt;from_account_name&gt; &lt;to_address&gt; [memo_message] [strategy]
+wallet_transfer_to_address         100              BTS             myaccount      BTS-address   "cold storage" vote_recommended
+</pre>
+      </dd>
+
+      <dt>Verification of wallet</dt>
+      <dd>Send a marginal amount to your BitShares address. Check your balance by
+          going to bitsharesblocks.com use use the internal block explorer of the
+          client and entering your BitShares address.</dd>
+
+      <dt>Spending Funds from Cold Storage</dt>
+      <dd><img style="float:right" width="60%" alt="Import Private Key" src="img/coldstorage-importkey.png"/>
+          Spend your BitShares by going to your favorit wallet and import your
+          private key into your account. You can also spend your funds by
+          downloading one of the popular BitShare mobile apps and importing your
+          private key there. Keep in mind when you import your single key to a
+          BitShare client and spend funds your key may be bundled with other private
+          keys in the client. Note that when importing your private key into any
+          client, it no longer is "cold". Satoshi already advised that one should
+          never delete a wallet.
+          <ol>
+           <li>Select the account you want to import the funds to.</li>
+           <li>Go to the tab "Keys".</li>
+           <li>Import the Private Key (wallet import format) into the text field.</li>
+           <li>Make sure you have the "Rescan Blockchain" checkbox ticked.</li>
+           <li>Press "Import Key".</li>
+           <li>Wait until the rescan has compeleted.</li>
+           <li>Your funds should be available to transfer.</li>
+          </ol>
+         </dd>
+     </dl>
+     <div style="clear:both"></div>
+
+     <footer class="footer">
+       <div class="container">
+         <p class="text-muted"> Copyright Fabian Schuh. JavaScript copyrights are included in the source. No warranty.</p>
+       </div>
+     </footer>
+    </div>
+
+    <!-- Java Script //-->
+    <script type="text/javascript">
+    var key
+    $(document).ready(function() {
+     var randArr = new Uint8Array(32)
+     window.crypto.getRandomValues(randArr) //populate array with cryptographically secure random numbers
+     key = bts.ecc.PrivateKey.fromBuffer(randArr)
+     new QRCode(document.getElementById("wif"), key.toWif());
+     new QRCode(document.getElementById("add"), key.toPublicKey().toBtsAddy());
+     $("#wiftext").text(key.toWif());
+     $("#addtext").text(key.toPublicKey().toBtsAddy());
+    })
+    </script>
+  </body>
+</html>
