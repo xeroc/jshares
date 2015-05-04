@@ -32,8 +32,8 @@
        <small>Randomly chosen pivate key. Refresh to get a new key.</small>
       </div>
       <div class="col-md-3 h1">
-        <button class="btn btn-primary" type="submit" onClick="window.print()"><span class="glyphicon glyphicon-print">Print</button>
-        <button class="btn btn-danger" type="submit" onClick="window.location.reload()"><span class="glyphicon glyphicon-refresh">Refresh</button>
+        <button class="btn btn-primary" type="submit" onClick="window.print()"><span class="glyphicon glyphicon-print"></span> Print</button>
+        <button class="btn btn-danger" type="submit" onClick="window.location.reload()"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
       </div>
      </div>
      <div class="row">
@@ -82,16 +82,25 @@
           Treat a paper wallet like cash.</dd>
 
       <dt class="h4">Funding</dt>
-      <dd class="text-justify">Add funds to this wallet by sending them to your
-          BitShares address. Never hand over your private key to anyone! Before
-          BitShares <code>0.9.0</code> you will have to use a terminal command
-          to transfer your funds to your paper wallet address. The terminal can
-          be found in the <code>Advanced</code> tab (in the list of your
-          accounts, top-right). Fund can be transfer like this:
+      <dd class="text-justify">
+          Add funds to this wallet by sending them to your BitShares address.
+          Never hand over your private key to anyone! 
+          To send funds to you address you can just copy paste the generated
+          address into the receiver similiar to when you send funds to an
+          account name. If you have the GUI client installed, you can simply
+          press the button below (verify the recipient!)
+          <div class="well center-block" style="max-width: 400px;">
+           <button class="btn btn-primary btn-lg btn-block" id="fundlink" type="submit"><span class="glyphicon glyphicon glyphicon-download-alt"></span> Fund</button>
+          </div> 
+          Alternatively, you can use the terminal which can be
+          found in the <code>Advanced</code> settings (in the list of your
+          accounts, top-right). Funds can be transfer like this:
 <pre>
-wallet_transfer_to_address &lt;amount_to_transfer&gt; &lt;asset_symbol&gt; &lt;from_account_name&gt; &lt;to_address&gt; [memo_message] [strategy]
-wallet_transfer_to_address         100              BTS             myaccount      BTS-address   "paper wallet" vote_recommended
+transfer &lt;amount_to_transfer&gt; &lt;asset_symbol&gt; &lt;from_account_name&gt; &lt;to_address&gt; [memo_message] [strategy]
+transfer         100              BTS             myaccount      BTS-address   "paper wallet" vote_recommended
 </pre>
+          The last two parameters (i.e., "paper wallet" and "vote_recommended")
+          are optional.
       </dd>
 
       <dt class="h4">Verification of wallet</dt>
@@ -169,6 +178,13 @@ blockchain_list_address_balances &lt;BTS-address&gt;
      $("#wiftext").text(key.toWif());
      $("#addtext").text(key.toPublicKey().toBtsAddy());
     })
+    $(function(){
+         $('#fundlink').click(function(){
+             url = 'bts:' + key.toPublicKey().toBtsAddy() + '/transfer/memo/paper wallet/'
+             var win = window.open(url, '_blank');
+             win.focus();
+         });
+    });
     </script>
   </body>
 </html>
