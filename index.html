@@ -41,7 +41,7 @@
       <div class="col-md-6">
        <div class="form-group">
          <p class="text-center"><div id="add"></div></p>
-         <label>BitShares Address</label>
+         <label>BitShares PublicKey</label>
          <p><code id="addtext"></code></p>
        </div>
       </div>
@@ -57,15 +57,15 @@
 
      <h2>Instructions</h2>
      <dl>
-      <dt class="h4">Address and Private Key</dt>
+      <dt class="h4">Public and Private Key</dt>
       <dd class="text-justify">You see a single pairing (wallet) of a BitShares
-          address with its corresponding private key (in the import format).
+          public key with its corresponding private key (in the import format).
           These have been generated for you in your web browser and is
           displayed above.</dd>
 
       <dt class="h4">Safety</dt>
       <dd class="text-justify">To safeguard this wallet you must print or
-          otherwise record the BitShares address and private key. It is
+          otherwise record the BitShares public key and private key. It is
           important to make a backup copy of the private key and store it in a
           safe location. This site does not have knowledge of your private key.
           If you are familiar with PGP you can download this all-in-one HTML
@@ -73,57 +73,31 @@
           this site by matching the SHA256 hash of this HTML with the SHA256
           hash available in the signed version history document linked on the
           footer of this site. If you leave/refresh the site or press the
-          "Generate New Address" button then a new private key will be
+          "Generate New Key" button then a new private key will be
           generated and the previously displayed private key will not be
           retrievable. Your BitShares private key should be kept a secret.
           Whomever you share the private key with has access to spend all the
-          BitShares and assets associated with that address. If you print your
+          BitShares and assets associated with that key. If you print your
           wallet then store it in a zip lock bag to keep it safe from water.
           Treat a paper wallet like cash.</dd>
 
-      <dt class="h4">Funding</dt>
-      <dd class="text-justify">
-          Add funds to this wallet by sending them to your BitShares address.
-          Never hand over your private key to anyone! 
-          To send funds to you address you can just copy paste the generated
-          address into the receiver similiar to when you send funds to an
-          account name. If you have the GUI client installed, you can simply
-          press the button below (verify the recipient!)
-          <div class="well center-block" style="max-width: 400px;">
-           <button class="btn btn-primary btn-lg btn-block" id="fundlink" type="submit"><span class="glyphicon glyphicon glyphicon-download-alt"></span> Fund</button>
-          </div> 
-          Alternatively, you can use the terminal which can be
-          found in the <code>Advanced</code> settings (in the list of your
-          accounts, top-right). Funds can be transfer like this:
-<pre>
-transfer &lt;amount_to_transfer&gt; &lt;asset_symbol&gt; &lt;from_account_name&gt; &lt;to_address&gt; [memo_message] [strategy]
-transfer         100              BTS             myaccount      BTS-address   "paper wallet" vote_recommended
-</pre>
-          The last two parameters (i.e., "paper wallet" and "vote_recommended")
-          are optional.
-      </dd>
+      <dt class="h4">Upgrading your Account</dt>
+      <dd class="text-justify"><img style="float:right; padding-left:3em;margin-bottom:3ex" width="60%" alt="Import Private Key" src="img/update-account.png"/>
+          In BitShares, each account is separated into
+          <ul class="simple">
+          <li><strong>Active Permission</strong>: control over its funds and</li>
+          <li><strong>Owner Permission</strong>: control over the account.</li>
+          </ul>
+          Both can be defined in the <cite>Permissions</cite> tab of your account using so called
+          <em>authorities</em> (see below) together with a so called <em>threshold</em> that has to be
+          exceeded in order for a transaction to be valid.
 
-      <dt class="h4">Verification of wallet</dt>
-      <dd class="text-justify">Send a marginal amount to your BitShares
-          address. Check your balance by going to bitsharesblocks.com use use the
-          internal block explorer of the client and entering your BitShares
-          address. Using the internal block explorer of the BitShares client,
-          you can verify the balance of your paper wallet with the following
-          command issued in the terminal.
-<pre>
-blockchain_list_address_balances &lt;BTS-address&gt;
->>> blockchain_list_address_balances BTS32YFDUuB5eKASWGcR4UitfzvZ4DX1TCZn
-[[
-    "BTSHouo1QaCbxGLPvREPTthiQo2Cc1GYkBwr",{
-      "condition": {
-        "asset_id": 0,                                      # Asset id (0: BTS / 22: USD)
-        [..]
-      },
-      "balance": 25000000000,                               # Amount in Larimer/Satoshi
-      [..]
-    }]]
-</pre>
-      </dd>
+          Now, use the public key (left-hand side) to update the <a
+          href="http://docs.bitshares.eu/bitshares/user/account-permissions.html">permissions
+          of your account</a>. Make sure to give it a weight that is heigher
+          than the threshold. If you want that key to be the sole key for
+          accessing the funds, remove all other keys from the active
+          permissions tabs.</dd>
 
       <dt class="h4">Spending Funds from Paper Wallet</dt>
       <dd class="text-justify"><img style="float:right; padding-left:3em" width="60%" alt="Import Private Key" src="img/coldstorage-importkey.png"/>
@@ -148,6 +122,16 @@ blockchain_list_address_balances &lt;BTS-address&gt;
      </dl>
      <div style="clear:both"></div>
 
+     <code>
+     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+     SOFTWARE.
+     </code>
+
      <footer class="footer">
       <div class="container text-muted">
        <div class="row">
@@ -157,7 +141,6 @@ blockchain_list_address_balances &lt;BTS-address&gt;
         <div class="col-md-6 text-right">
          <p>
           <a href="http://bitsharesblocks.com/accounts/account?name=donations.xeroc">donations.xeroc</a> |
-          <a href="bts:delegate.xeroc/approve">delegate.xeroc</a> |
           <a href="http://github.com/xeroc/jshares/" target="_blank">Source</a> (<a href="https://github.com/xeroc/jshares/archive/master.zip">zip</a>)
          </p>
         </div>
@@ -168,23 +151,16 @@ blockchain_list_address_balances &lt;BTS-address&gt;
 
     <!-- Java Script //-->
     <script type="text/javascript">
-    var key
+    var key;
     $(document).ready(function() {
      var randArr = new Uint8Array(32)
      window.crypto.getRandomValues(randArr) //populate array with cryptographically secure random numbers
      key = bts.ecc.PrivateKey.fromBuffer(randArr)
      new QRCode(document.getElementById("wif"), key.toWif());
-     new QRCode(document.getElementById("add"), key.toPublicKey().toBtsAddy());
+     new QRCode(document.getElementById("add"), key.toPublicKey().toBtsPublic());
      $("#wiftext").text(key.toWif());
-     $("#addtext").text(key.toPublicKey().toBtsAddy());
+     $("#addtext").text(key.toPublicKey().toBtsPublic());
     })
-    $(function(){
-         $('#fundlink').click(function(){
-             url = 'bts:' + key.toPublicKey().toBtsAddy() + '/transfer/memo/paper wallet/'
-             var win = window.open(url, '_blank');
-             win.focus();
-         });
-    });
     </script>
   </body>
 </html>
